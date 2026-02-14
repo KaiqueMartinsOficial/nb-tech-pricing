@@ -5,20 +5,94 @@ import os
 # --- CONFIGURAÇÃO VISUAL ---
 st.set_page_config(page_title="NB Tech | Pricing Core", layout="wide", page_icon="⚡")
 
-# CSS BLINDADO
+# CSS BLINDADO (Corrigido para forçar caixas brancas)
 st.markdown("""
     <style>
+    /* 1. FUNDO GERAL BRANCO */
     .stApp { background-color: #FFFFFF; }
-    .main .block-container p, .main .block-container label, .main .block-container span, .main .block-container div { color: #151515 !important; }
-    h1, h2, h3, h4, h5 { color: #E20A14 !important; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: 700; }
-    [data-testid="stSidebar"] { background-color: #151515; }
-    [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label, [data-testid="stSidebar"] div { color: #FFFFFF !important; }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color: #E20A14 !important; }
-    div.stButton > button { background-color: #E20A14; color: white !important; border-radius: 6px; border: none; font-weight: bold; }
-    div.stButton > button:hover { background-color: #b30000; }
-    div[data-testid="stSliderTickBarMin"], div[data-testid="stSliderTickBarMax"], div[data-testid="stThumbValue"] { color: #151515 !important; }
-    div.row-widget.stRadio > div { color: #151515 !important; }
-    div[data-testid="stMetric"] { background-color: #F8F9FA; padding: 15px; border-radius: 8px; border-left: 5px solid #E20A14; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+    
+    /* 2. FORÇAR TEXTOS ESCUROS NA ÁREA PRINCIPAL */
+    .main .block-container p, 
+    .main .block-container label, 
+    .main .block-container span, 
+    .main .block-container div { 
+        color: #151515 !important; 
+    }
+
+    /* 3. CORREÇÃO CRÍTICA DOS INPUTS (CAIXAS DE TEXTO) */
+    /* Isso força o fundo das caixas a ser branco e borda cinza, ignorando o tema escuro */
+    div[data-baseweb="input"] > div,
+    div[data-baseweb="select"] > div,
+    div[data-baseweb="base-input"] {
+        background-color: #FFFFFF !important;
+        border: 1px solid #CCCCCC !important;
+        color: #151515 !important;
+    }
+    input[type="text"], input[type="number"] {
+        color: #151515 !important;
+    }
+    
+    /* Corrigir a cor do texto dentro dos selects (Dropdowns) */
+    div[data-baseweb="select"] span {
+        color: #151515 !important;
+    }
+    
+    /* Corrigir cor do item selecionado no Dropdown */
+    ul[data-testid="stSelectboxVirtualDropdown"] li {
+        background-color: #FFFFFF !important;
+        color: #151515 !important;
+    }
+
+    /* 4. SIDEBAR (MENU LATERAL) - PRETO */
+    section[data-testid="stSidebar"] {
+        background-color: #151515 !important;
+    }
+    /* Textos da Sidebar Brancos */
+    section[data-testid="stSidebar"] p, 
+    section[data-testid="stSidebar"] span, 
+    section[data-testid="stSidebar"] label, 
+    section[data-testid="stSidebar"] div { 
+        color: #FFFFFF !important; 
+    }
+    /* Títulos da Sidebar Vermelhos */
+    section[data-testid="stSidebar"] h1, 
+    section[data-testid="stSidebar"] h2, 
+    section[data-testid="stSidebar"] h3 { 
+        color: #E20A14 !important; 
+    }
+
+    /* 5. TÍTULOS GERAIS */
+    h1, h2, h3, h4, h5 { 
+        color: #E20A14 !important; 
+        font-family: 'Helvetica', 'Arial', sans-serif; 
+        font-weight: 700; 
+    }
+    
+    /* 6. BOTÕES */
+    div.stButton > button { 
+        background-color: #E20A14; 
+        color: white !important; 
+        border-radius: 6px; 
+        border: none; 
+        font-weight: bold; 
+    }
+    div.stButton > button:hover { 
+        background-color: #b30000; 
+    }
+    
+    /* 7. SLIDERS E VÁRIOS */
+    div[data-testid="stSliderTickBarMin"], 
+    div[data-testid="stSliderTickBarMax"], 
+    div[data-testid="stThumbValue"] { 
+        color: #151515 !important; 
+    }
+    div[data-testid="stMetric"] { 
+        background-color: #F8F9FA; 
+        padding: 15px; 
+        border-radius: 8px; 
+        border-left: 5px solid #E20A14; 
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1); 
+    }
     div[data-testid="stMetricLabel"] { color: #555555 !important; }
     div[data-testid="stMetricValue"] { color: #151515 !important; }
     </style>
@@ -45,7 +119,7 @@ with col_logo:
     else: st.markdown("<div style='background-color:#E20A14; color:white; padding:10px; text-align:center;'>NB Tech</div>", unsafe_allow_html=True)
 with col_title:
     st.title("Sistema Integrado de Precificação")
-    st.caption("v3.4 Stable | Matriz Tributária 2025/2026")
+    st.caption("v3.5 Stable | Matriz Tributária 2025/2026")
 
 # --- MENU ---
 st.sidebar.header("NAVEGAÇÃO")
@@ -80,7 +154,6 @@ if page == "Precificador de Produtos":
         st.subheader("Dados da Venda")
         dest_uf = st.selectbox("UF Destino", TaxConstants.ESTADOS, index=TaxConstants.ESTADOS.index("BA"))
         
-        # Pega o ICMS real da tabela baseado no estado selecionado
         icms_real_state = TaxConstants.ICMS_INTERNO_ESTADOS.get(dest_uf, 0.18)
         
         icms_dest = st.number_input(
