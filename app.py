@@ -5,7 +5,7 @@ import os
 # --- CONFIGURAÇÃO VISUAL ---
 st.set_page_config(page_title="NB Tech | Pricing Core", layout="wide", page_icon="⚡")
 
-# CSS BLINDADO (Corrigido para forçar caixas brancas)
+# CSS BLINDADO (Corrigido para botões +/-)
 st.markdown("""
     <style>
     /* 1. FUNDO GERAL BRANCO */
@@ -20,7 +20,6 @@ st.markdown("""
     }
 
     /* 3. CORREÇÃO CRÍTICA DOS INPUTS (CAIXAS DE TEXTO) */
-    /* Isso força o fundo das caixas a ser branco e borda cinza, ignorando o tema escuro */
     div[data-baseweb="input"] > div,
     div[data-baseweb="select"] > div,
     div[data-baseweb="base-input"] {
@@ -47,14 +46,12 @@ st.markdown("""
     section[data-testid="stSidebar"] {
         background-color: #151515 !important;
     }
-    /* Textos da Sidebar Brancos */
     section[data-testid="stSidebar"] p, 
     section[data-testid="stSidebar"] span, 
     section[data-testid="stSidebar"] label, 
     section[data-testid="stSidebar"] div { 
         color: #FFFFFF !important; 
     }
-    /* Títulos da Sidebar Vermelhos */
     section[data-testid="stSidebar"] h1, 
     section[data-testid="stSidebar"] h2, 
     section[data-testid="stSidebar"] h3 { 
@@ -68,7 +65,7 @@ st.markdown("""
         font-weight: 700; 
     }
     
-    /* 6. BOTÕES */
+    /* 6. BOTÕES PRINCIPAIS */
     div.stButton > button { 
         background-color: #E20A14; 
         color: white !important; 
@@ -95,6 +92,26 @@ st.markdown("""
     }
     div[data-testid="stMetricLabel"] { color: #555555 !important; }
     div[data-testid="stMetricValue"] { color: #151515 !important; }
+
+    /* 8. CORREÇÃO DOS BOTÕES + E - NOS INPUTS NUMÉRICOS */
+    button[kind="secondary"] {
+        background-color: #F0F0F0 !important; /* Fundo Cinza Claro */
+        color: #151515 !important;            /* Sinal Preto */
+        border: 1px solid #CCCCCC !important;
+    }
+    button[kind="secondary"]:hover {
+        background-color: #E20A14 !important; /* Fundo Vermelho ao passar mouse */
+        color: #FFFFFF !important;            /* Sinal Branco ao passar mouse */
+        border-color: #E20A14 !important;
+    }
+    /* Forçar ícones SVG dentro dos botões a serem pretos por padrão */
+    button[kind="secondary"] svg {
+        fill: #151515 !important;
+    }
+    /* Forçar ícones SVG a serem brancos no hover */
+    button[kind="secondary"]:hover svg {
+        fill: #FFFFFF !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -119,7 +136,7 @@ with col_logo:
     else: st.markdown("<div style='background-color:#E20A14; color:white; padding:10px; text-align:center;'>NB Tech</div>", unsafe_allow_html=True)
 with col_title:
     st.title("Sistema Integrado de Precificação")
-    st.caption("v3.5 Stable | Matriz Tributária 2025/2026")
+    st.caption("v3.6 Stable | Visual Final")
 
 # --- MENU ---
 st.sidebar.header("NAVEGAÇÃO")
