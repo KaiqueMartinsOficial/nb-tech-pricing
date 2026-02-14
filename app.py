@@ -5,13 +5,13 @@ import os
 # --- CONFIGURAÇÃO VISUAL ---
 st.set_page_config(page_title="NB Tech | Pricing Core", layout="wide", page_icon="⚡")
 
-# CSS BLINDADO (Corrigido para botões +/-)
+# CSS BLINDADO E REFORÇADO PARA BOTÕES +/-
 st.markdown("""
     <style>
-    /* 1. FUNDO GERAL BRANCO */
+    /* 1. FUNDO GERAL */
     .stApp { background-color: #FFFFFF; }
     
-    /* 2. FORÇAR TEXTOS ESCUROS NA ÁREA PRINCIPAL */
+    /* 2. TEXTOS ESCUROS */
     .main .block-container p, 
     .main .block-container label, 
     .main .block-container span, 
@@ -19,7 +19,7 @@ st.markdown("""
         color: #151515 !important; 
     }
 
-    /* 3. CORREÇÃO CRÍTICA DOS INPUTS (CAIXAS DE TEXTO) */
+    /* 3. CAIXAS DE INPUT (Brancas com Borda) */
     div[data-baseweb="input"] > div,
     div[data-baseweb="select"] > div,
     div[data-baseweb="base-input"] {
@@ -31,41 +31,31 @@ st.markdown("""
         color: #151515 !important;
     }
     
-    /* Corrigir a cor do texto dentro dos selects (Dropdowns) */
-    div[data-baseweb="select"] span {
-        color: #151515 !important;
-    }
-    
-    /* Corrigir cor do item selecionado no Dropdown */
+    /* Dropdowns */
+    div[data-baseweb="select"] span { color: #151515 !important; }
     ul[data-testid="stSelectboxVirtualDropdown"] li {
         background-color: #FFFFFF !important;
         color: #151515 !important;
     }
 
-    /* 4. SIDEBAR (MENU LATERAL) - PRETO */
-    section[data-testid="stSidebar"] {
-        background-color: #151515 !important;
-    }
+    /* 4. SIDEBAR (Preto e Vermelho) */
+    section[data-testid="stSidebar"] { background-color: #151515 !important; }
     section[data-testid="stSidebar"] p, 
     section[data-testid="stSidebar"] span, 
     section[data-testid="stSidebar"] label, 
-    section[data-testid="stSidebar"] div { 
-        color: #FFFFFF !important; 
-    }
+    section[data-testid="stSidebar"] div { color: #FFFFFF !important; }
     section[data-testid="stSidebar"] h1, 
     section[data-testid="stSidebar"] h2, 
-    section[data-testid="stSidebar"] h3 { 
-        color: #E20A14 !important; 
-    }
+    section[data-testid="stSidebar"] h3 { color: #E20A14 !important; }
 
-    /* 5. TÍTULOS GERAIS */
+    /* 5. TÍTULOS */
     h1, h2, h3, h4, h5 { 
         color: #E20A14 !important; 
         font-family: 'Helvetica', 'Arial', sans-serif; 
         font-weight: 700; 
     }
     
-    /* 6. BOTÕES PRINCIPAIS */
+    /* 6. BOTÕES DE AÇÃO (Grandes) */
     div.stButton > button { 
         background-color: #E20A14; 
         color: white !important; 
@@ -73,44 +63,40 @@ st.markdown("""
         border: none; 
         font-weight: bold; 
     }
-    div.stButton > button:hover { 
-        background-color: #b30000; 
-    }
+    div.stButton > button:hover { background-color: #b30000; }
     
-    /* 7. SLIDERS E VÁRIOS */
+    /* 7. SLIDERS */
     div[data-testid="stSliderTickBarMin"], 
     div[data-testid="stSliderTickBarMax"], 
-    div[data-testid="stThumbValue"] { 
-        color: #151515 !important; 
-    }
+    div[data-testid="stThumbValue"] { color: #151515 !important; }
     div[data-testid="stMetric"] { 
         background-color: #F8F9FA; 
         padding: 15px; 
         border-radius: 8px; 
         border-left: 5px solid #E20A14; 
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.1); 
     }
     div[data-testid="stMetricLabel"] { color: #555555 !important; }
     div[data-testid="stMetricValue"] { color: #151515 !important; }
 
-    /* 8. CORREÇÃO DOS BOTÕES + E - NOS INPUTS NUMÉRICOS */
-    button[kind="secondary"] {
-        background-color: #F0F0F0 !important; /* Fundo Cinza Claro */
-        color: #151515 !important;            /* Sinal Preto */
+    /* 8. CORREÇÃO DEFINITIVA DOS BOTÕES + E - (STEPPERS) */
+    /* Fundo do botão + e - */
+    div[data-testid="stNumberInput"] button {
+        background-color: #F0F0F0 !important; /* Cinza Claro */
         border: 1px solid #CCCCCC !important;
     }
-    button[kind="secondary"]:hover {
-        background-color: #E20A14 !important; /* Fundo Vermelho ao passar mouse */
-        color: #FFFFFF !important;            /* Sinal Branco ao passar mouse */
+    /* Cor do ícone (SVG) dentro do botão + e - */
+    div[data-testid="stNumberInput"] button svg {
+        fill: #151515 !important; /* Preto */
+        color: #151515 !important;
+    }
+    /* Efeito ao passar o mouse (Hover) */
+    div[data-testid="stNumberInput"] button:hover {
+        background-color: #E20A14 !important; /* Vermelho */
         border-color: #E20A14 !important;
     }
-    /* Forçar ícones SVG dentro dos botões a serem pretos por padrão */
-    button[kind="secondary"] svg {
-        fill: #151515 !important;
-    }
-    /* Forçar ícones SVG a serem brancos no hover */
-    button[kind="secondary"]:hover svg {
-        fill: #FFFFFF !important;
+    /* Cor do ícone ao passar o mouse */
+    div[data-testid="stNumberInput"] button:hover svg {
+        fill: #FFFFFF !important; /* Branco */
     }
     </style>
 """, unsafe_allow_html=True)
@@ -136,7 +122,7 @@ with col_logo:
     else: st.markdown("<div style='background-color:#E20A14; color:white; padding:10px; text-align:center;'>NB Tech</div>", unsafe_allow_html=True)
 with col_title:
     st.title("Sistema Integrado de Precificação")
-    st.caption("v3.6 Stable | Visual Final")
+    st.caption("v3.7 Stable | Visual Final")
 
 # --- MENU ---
 st.sidebar.header("NAVEGAÇÃO")
